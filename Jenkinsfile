@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JDK-21'
+        maven 'Maven-3.9.16'
+    }
+
     parameters {
         choice(
             name: 'ENVIRONMENT',
@@ -22,6 +27,14 @@ pipeline {
     }
 
     stages {
+
+        stage('Tool Check') {
+            steps {
+                bat 'java -version'
+                bat 'mvn -version'
+                bat 'git --version'
+            }
+        }
 
         stage('Checkout') {
             steps {
@@ -47,20 +60,6 @@ pipeline {
 
             steps {
                 bat 'mvn test'
-            }
-        }
-
-        stage('Credential Test') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'demo-credential',
-                        usernameVariable: 'MY_USERNAME',
-                        passwordVariable: 'MY_PASSWORD'
-                    )
-                ]) {
-                    bat 'echo Username is %MY_USERNAME%'
-                }
             }
         }
 
