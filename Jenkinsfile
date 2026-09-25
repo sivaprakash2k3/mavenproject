@@ -68,6 +68,21 @@ pipeline {
                 bat 'mvn test'
             }
         }
+        stage('SonarQube Analysis') {
+    steps {
+        withCredentials([
+            string(
+                credentialsId: 'sonarqube-token',
+                variable: 'SONAR_TOKEN'
+            )
+        ]) {
+            withSonarQubeEnv('SonarQube-EC2') {
+                bat 'mvn sonar:sonar -Dsonar.token=%SONAR_TOKEN%'
+            }
+        }
+    }
+}
+ 
 
         stage('Archive') {
             steps {
