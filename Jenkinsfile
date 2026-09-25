@@ -69,7 +69,7 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-    steps {
+            steps {
         withCredentials([
             string(
                 credentialsId: 'sonarqube-token',
@@ -77,13 +77,11 @@ pipeline {
             )
         ]) {
             withSonarQubeEnv('SonarQube-EC2') {
-                bat 'mvn sonar:sonar -Dsonar.token=%SONAR_TOKEN%'
+                bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=%SONAR_TOKEN%'
             }
         }
     }
 }
- 
-
         stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar',
