@@ -41,6 +41,12 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Workspace Check') {
+    steps {
+        bat 'echo WORKSPACE=%WORKSPACE%'
+        bat 'dir'
+    }
+}
 
         stage('Build') {
             steps {
