@@ -50,6 +50,20 @@ pipeline {
             }
         }
 
+        stage('Credential Test') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'demo-credential',
+                        usernameVariable: 'MY_USERNAME',
+                        passwordVariable: 'MY_PASSWORD'
+                    )
+                ]) {
+                    bat 'echo Username is %MY_USERNAME%'
+                }
+            }
+        }
+
         stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar',
